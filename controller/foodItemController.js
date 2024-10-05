@@ -14,7 +14,7 @@ const addFoodItem = async (req, res) => {
     try {
         const { name, price, description } = req.body
 
-        const file =req.file
+        const file = req.file
 
         console.log("File",file)
 
@@ -35,6 +35,7 @@ const addFoodItem = async (req, res) => {
         if (!name || !price || !description) {
             return failureResponse({ res, message: "All fields are required" })
         }
+
 
         const createFoodItem = await FoodItem.create({
             name, price, imageAddress:result.secure_url, description
@@ -58,4 +59,21 @@ const addFoodItem = async (req, res) => {
     }
 }
 
-module.exports = { addFoodItem }
+const getAllFoodItem=async(req,res)=>{
+    try {
+        const response=await FoodItem.find()
+        return successResponse({
+            res,
+            data:response,
+            message:"success"
+        })
+    } catch (error) {
+        return failureResponse({
+            res,
+            message:"Internal Server Error"
+        })
+    }
+
+}
+
+module.exports = { addFoodItem,getAllFoodItem }
